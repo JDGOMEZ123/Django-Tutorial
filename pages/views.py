@@ -102,6 +102,22 @@ class ProductCreateView(View):
     def post(self, request):
         form = ProductForm(request.POST)
         if form.is_valid():
+            # Get the form data
+            name = form.cleaned_data['name']
+            price = form.cleaned_data['price']
+            
+            # Create new product
+            new_id = str(len(Product.products) + 1)
+            new_product = {
+                "id": new_id,
+                "name": name,
+                "description": f"Best {name}",
+                "price": f"${price:.2f}"
+            }
+            
+            # Add to products list
+            Product.products.append(new_product)
+            
             return redirect('success')
         else:
             viewData = {}
